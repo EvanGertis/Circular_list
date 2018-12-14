@@ -72,28 +72,103 @@ int main()
 }
 
 struct node *createList(struct node *last){
+	int i, n, data;
+	printf("Enter the number of nodes : ");
+	scanf("%d", &n);
+	
+	last = NULL;
+	if(n== 0)
+		return last;
+	
+	printf("Enter the element to be inserted : ");
+	scanf("%d", &data);
+	last = insertInEmptyList(last, data);
+	
+	for(i=2; i <=n; i++){
+		printf("Enter the element to be inserted : ");
+		scanf("%d", &data);
+		last = insertAtEnd(last, data);
+	}
 	
 	return last;
 }/*End createList*/
 
 void displayList(struct node *last){
+	struct node *p;
+	if(last == NULL)
+	{
+		printf("List is empty \n");
+		return;
+	}
+	
+	p = last->link;
+	do
+	{
+		printf("%d", p->info);
+		p = p->link;
+	} while(p != last->link);
+	printf("\n");
 	
 }/*End displayList*/
 
 struct node *insertInEmptyList(struct node *last, int data){
+	struct node *temp;
+	temp = (struct node *)malloc(sizeof(struct node));
+	
+	last = temp;
+	last->link = last;
 	
 	return last;
 }/*End insertInEmptyList*/
 
 struct node *insertInBeginning(struct node *last, int data){
-		
+	struct node *temp;
+	temp = (struct node *)malloc(sizeof(struct node));
+	temp->info = data;
+	
+	temp->link = last->link;
+	last->link = temp;
 	return last;
 }/*End insertInBeginning*/
 
 struct node *insertAtEnd(struct node *last, int data){
+	struct node *temp, *p;
+	temp = (struct node *)malloc(sizeof(struct node));
+	temp->info = data;
+	
+	temp->link = last->link;
+	last->link = temp;
+	last = temp;
 	
 	return last;
 }/*End insertAtEnd*/
+
+struct node *insertAfter(struct node *last, int data, int x){
+	struct node *temp, *p;
+	p = last->link;
+	
+	do{
+		if(p->info == x)
+			break;
+		p = p->link;
+	}while(p != last->link);
+	
+	if(p== last->link && p->info !=x){
+		printf("%d not present in the list \n", x);
+	}
+	else {
+		temp = (struct node *)malloc(sizeof(struct node));
+		temp->info = data;
+		
+		temp->link = p->link;
+		p->link =temp;
+		if(p == last){
+			last = temp;
+		}
+	}
+	
+	return last;
+}
 
 struct node *deleteNode(struct node *last, int data){
 	
